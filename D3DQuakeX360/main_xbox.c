@@ -26,7 +26,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 int main(/*int argc, char *argv[]*/)
 {
-//	SDL_Event	event;
+#ifdef SDL_EVENTS
+	SDL_Event	event;
+#endif	
 	quakeparms_t	parms;
 	int		t;
 	int		done = 0;
@@ -100,9 +102,10 @@ int main(/*int argc, char *argv[]*/)
 	else
 	while (!done)
 	{
-		while (!done/* && SDL_PollEvent (&event)*/)
+#ifdef SDL_EVENTS		
+		while (!done && SDL_PollEvent (&event))
 		{
-/*			switch (event.type)
+			switch (event.type)
 			{
 			case SDL_ACTIVEEVENT:
 				if (event.active.state & (SDL_APPACTIVE|SDL_APPINPUTFOCUS))
@@ -167,11 +170,12 @@ int main(/*int argc, char *argv[]*/)
 				break;
 			case SDL_QUIT:
 				done = 1;
-				break;*/
-//			default:
 				break;
-//			}
+			default:
+				break;
+			}
 		}
+#endif //SDL_EVENTS		
 
 		newtime = Sys_FloatTime();
 		time = newtime - oldtime;
@@ -186,7 +190,7 @@ int main(/*int argc, char *argv[]*/)
 		oldtime = newtime;
 	}
 
-//	Sys_Quit();
+	Sys_Quit();
 	return 0;
 }
 
